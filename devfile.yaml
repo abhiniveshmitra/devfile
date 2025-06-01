@@ -1,0 +1,73 @@
+schemaVersion: 2.2.0
+metadata:
+  name: event-portal
+  version: 1.0.0
+  displayName: Event Portal Dev Environment
+  description: Devfile for the Event Portal App with FastAPI backend and React frontend
+
+components:
+  - name: backend
+    container:
+      image: python:3.9
+      sourceMapping: /backend/app
+      endpoints:
+        - name: fastapi
+          targetPort: 8000
+      command:
+        - bash
+      args:
+        - -c
+        - |
+          pip install -r ../requirements.txt
+          uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+      mountSources: true
+      workingDir: /backend/app
+
+  - name: frontend
+    container:
+      image: node:18
+      sourceMapping: /frontend
+      endpoints:
+        - name: vite
+          targetPort: 5173
+      command:
+        - bash
+      args:
+        - -c
+        - |
+          yarn install || npm install
+          yarn dev || npm run dev
+      mountSources: true
+      workingDir: /frontend
+
+  - name: tools
+    container:
+      image: bash:latest
+      command:
+        - sleep
+      args:
+        - infinity
+
+projects:
+  - name: event-portal
+    git:
+      remotes:
+        origin: https://gitlab.com/yourusername/event-portal-final.git
+
+commands:
+  - id: backend-run
+    exec:
+      component: backend
+      commandLine: uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+      workingDir: /backend/app
+      group:
+        kind: run
+        isDefault: true
+
+  - id: frontend-run
+    exec:
+      component: frontend
+      commandLine: yarn dev || npm run dev
+      workingDir: /frontend
+      group:
+        kind: run
