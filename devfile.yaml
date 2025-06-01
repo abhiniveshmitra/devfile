@@ -18,8 +18,8 @@ components:
       args:
         - -c
         - |
-          pip install -r ../requirements.txt
-          uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+          pip install -r requirements.txt
+          uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
       mountSources: true
       workingDir: /backend/app
 
@@ -42,7 +42,7 @@ components:
 
   - name: tools
     container:
-      image: bash:latest
+      image: alpine:latest
       command:
         - sleep
       args:
@@ -52,13 +52,13 @@ projects:
   - name: event-portal
     git:
       remotes:
-        origin: https://gitlab.com/yourusername/event-portal-final.git
+        origin: https://gitlab.com/t819643/event-portal-final.git
 
 commands:
   - id: backend-run
     exec:
       component: backend
-      commandLine: uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+      commandLine: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
       workingDir: /backend/app
       group:
         kind: run
