@@ -1,0 +1,15 @@
+Control Structures
+
+Control structures determine the flow of a program. 
+Common control structures are conditionals (if, else) and loops (for, while).
+
+Example:
+if (score >= 50) {
+    print("Pass");
+} else {
+    print("Fail");
+}
+
+for (int i = 0; i < 10; i++) {
+    print(i);
+}
