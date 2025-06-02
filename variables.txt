@@ -1,0 +1,10 @@
+Variables and Data Types
+
+A variable is a named location in memory that stores a value. 
+In programming, common data types include integers, floats, strings, and booleans.
+
+Example:
+int age = 25;
+float price = 19.99;
+string name = "Alice";
+bool isActive = true;
