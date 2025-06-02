@@ -1,0 +1,8 @@
+Basic Algorithms
+
+Algorithms are step-by-step procedures to solve problems.
+Common examples include searching and sorting algorithms.
+
+Example:
+Linear search iterates through an array to find an element.
+Binary search repeatedly divides the array in half to find an element.
