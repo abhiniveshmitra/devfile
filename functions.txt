@@ -1,0 +1,9 @@
+Functions
+
+A function is a block of code that performs a specific task.
+Functions can have parameters and return values.
+
+Example:
+int add(int a, int b) {
+    return a + b;
+}
