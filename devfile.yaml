@@ -2,13 +2,14 @@ schemaVersion: 2.2.0
 metadata:
   name: react-vite-yarn-app
   version: 1.0.0
-  description: Devfile for React + Vite app using Yarn
+  description: Devfile for a React + Vite app using Yarn
 
 components:
   - name: nodejs
     container:
       image: node:18
-      memoryLimit: 512Mi
+      memoryRequest: 512Mi   # Required to match memoryLimit
+      memoryLimit: 512Mi     # Keeps container lightweight but consistent
       mountSources: true
       endpoints:
         - name: vite-dev
