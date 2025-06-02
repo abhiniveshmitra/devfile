@@ -1,73 +1,40 @@
 schemaVersion: 2.2.0
 metadata:
-  name: event-portal
+  name: react-vite-yarn-app
   version: 1.0.0
-  displayName: Event Portal Dev Environment
-  description: Devfile for the Event Portal App with FastAPI backend and React frontend
+  description: Devfile for React + Vite app using Yarn
 
 components:
-  - name: backend
-    container:
-      image: python:3.9
-      sourceMapping: /backend/app
-      endpoints:
-        - name: fastapi
-          targetPort: 8000
-      command:
-        - bash
-      args:
-        - -c
-        - |
-          pip install -r requirements.txt
-          uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
-      mountSources: true
-      workingDir: /backend/app
-
-  - name: frontend
+  - name: nodejs
     container:
       image: node:18
-      sourceMapping: /frontend
-      endpoints:
-        - name: vite
-          targetPort: 5173
-      command:
-        - bash
-      args:
-        - -c
-        - |
-          yarn install || npm install
-          yarn dev || npm run dev
+      memoryLimit: 512Mi
       mountSources: true
-      workingDir: /frontend
-
-  - name: tools
-    container:
-      image: alpine:latest
-      command:
-        - sleep
+      endpoints:
+        - name: vite-dev
+          targetPort: 5173
+          exposure: public
+      command: ["sh", "-c"]
       args:
-        - infinity
-
-projects:
-  - name: event-portal
-    git:
-      remotes:
-        origin: https://gitlab.com/t819643/event-portal-final.git
+        - |
+          yarn install &&
+          yarn vite --host
 
 commands:
-  - id: backend-run
+  - id: install
     exec:
-      component: backend
-      commandLine: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
-      workingDir: /backend/app
+      component: nodejs
+      workingDir: ${PROJECT_SOURCE}
+      commandLine: "yarn install"
+      group:
+        kind: build
+        isDefault: true
+
+  - id: dev
+    exec:
+      component: nodejs
+      workingDir: ${PROJECT_SOURCE}
+      commandLine: "yarn vite --host"
       group:
         kind: run
         isDefault: true
-
-  - id: frontend-run
-    exec:
-      component: frontend
-      commandLine: yarn dev || npm run dev
-      workingDir: /frontend
-      group:
-        kind: run
